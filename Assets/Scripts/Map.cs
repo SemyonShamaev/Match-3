@@ -1,20 +1,41 @@
 ﻿using UnityEngine.SceneManagement;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Map : MonoBehaviour
 {
     private bool drag = false;
 
     private Camera cam;
+
     private Vector3 initialTouchPosition;
     private Vector3 initialCameraPosition;
+
+    private int passedLevels;
+    private string key;
+
+    public static int levelCount;
+
+    public GameObject[] levels; 
+    public Sprite[] levelImages;
 
     void Start()
     {
         cam = GetComponent<Camera>();
+        passedLevels = PlayerPrefs.GetInt("passedLevels");
+
+        foreach(GameObject level in levels)
+        {   
+            if(passedLevels > 0) level.GetComponent<Image>().sprite = levelImages[2];
+            if(passedLevels == 0) level.GetComponent<Image>().sprite = levelImages[1];
+            if(passedLevels < 0) break;
+
+            passedLevels--;
+            level.GetComponent<Button>().interactable = true;
+        }
     }
+
     void Update()
     {
         if (Input.touchCount == 1)
@@ -57,9 +78,9 @@ public class Map : MonoBehaviour
                touch.phase == TouchPhase.Stationary;
     }
 
-    public void levelPointPressed(int n)
+    public void levelPointPressed(int btnNumber)
     {
-        Debug.Log("Pressed");
+        levelCount = btnNumber;
         SceneManager.LoadScene("Game");
     }
 }
