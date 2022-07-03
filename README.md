@@ -1,3 +1,2 @@
-# Test game Match 3
- 
-
+# Match 3
+Игра в жанре три в ряд
